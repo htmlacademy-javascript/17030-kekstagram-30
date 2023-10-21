@@ -22,7 +22,7 @@ const isPalindrome = (string) => {
 
 isPalindrome('топот'); // true
 isPalindrome('ДовОд'); // true
-isPalindrome('cКекс'); // false
+isPalindrome('Кекс'); // false
 isPalindrome('Лёша на полке клопа нашёл '); // true
 
 const extractNumbers = (target) => {

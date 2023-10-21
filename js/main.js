@@ -41,6 +41,11 @@ const generateRandomPositiveInteger = (min, max) => {
   return Math.floor(randomValue);
 };
 
+const getId = () => {
+  let id = 0;
+  return () => ++id;
+};
+
 const createRandomIdFromRangeGenerator = (min, max) => {
   const previousIds = [];
 
@@ -67,27 +72,28 @@ const getRandomArrayItem = (items) => {
   return items[randomIndex];
 };
 
-const createComment = (commentId) => ({
-  id: commentId,
+const PUBLISHED_PHOTOS_COUNT = 25;
+const MAX_COMMENTS_COUNT = 30;
+
+const createRandomPhotoId = createRandomIdFromRangeGenerator(0, PUBLISHED_PHOTOS_COUNT);
+const createRandomPhotoUrlId = createRandomIdFromRangeGenerator(0, PUBLISHED_PHOTOS_COUNT);
+const generateCommentId = getId();
+
+const createComment = () => ({
+  id: generateCommentId(),
   avatar: `img/avatar${ generateRandomPositiveInteger(1, 6) }.svg`,
   message: getRandomArrayItem(MESSAGES),
   name: getRandomArrayItem(NAMES),
 });
 
-const PUBLISHED_PHOTOS_COUNT = 25;
-const MAX_COMMENTS_COUNT = 30;
-
-const createRandomIdForPhoto = createRandomIdFromRangeGenerator(0, 25);
-const createRandomIdForPhotoUrl = createRandomIdFromRangeGenerator(0, PUBLISHED_PHOTOS_COUNT);
-
 const createPhoto = () => {
   const comments = Array
     .from({ length: generateRandomPositiveInteger(0, MAX_COMMENTS_COUNT) })
-    .map((_, index) => createComment(index));
+    .map(createComment);
 
   return {
-    id: createRandomIdForPhoto(),
-    url: `photos/${ createRandomIdForPhotoUrl() }.jpg`,
+    id: createRandomPhotoId(),
+    url: `photos/${ createRandomPhotoUrlId() }.jpg`,
     description: getRandomArrayItem(DESCRIPTIONS),
     likes: generateRandomPositiveInteger(15, 200),
     comments,
