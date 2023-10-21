@@ -33,8 +33,6 @@ const NAMES = [
   'Юлия',
 ];
 
-const MAX_COMMENTS_COUNT = 30;
-
 const generateRandomPositiveInteger = (min, max) => {
   const lower = Math.abs(Math.floor(Math.min(min, max)));
   const upper = Math.abs(Math.ceil(Math.max(min, max)));
@@ -60,7 +58,48 @@ const createComment = (commentId) => {
   };
 };
 
-const comments = new Array
-  .from({ length: generateRandomPositiveInteger(0, MAX_COMMENTS_COUNT) })
-  .map((_, index) => createComment(index));
+const createRandomIdFromRangeGenerator = (min, max) => {
+  const previousIds = [];
 
+  return () => {
+    if (previousIds.length >= max - min + 1) {
+      return null;
+    }
+
+    let currentId = generateRandomPositiveInteger(min, max);
+
+    while (previousIds.includes(currentId)) {
+      currentId = generateRandomPositiveInteger(min, max);
+    }
+
+    previousIds.push(currentId);
+
+    return currentId;
+  };
+};
+
+const PUBLISHED_PHOTOS_COUNT = 25;
+const MAX_COMMENTS_COUNT = 30;
+
+const createRandomIdForPhoto = createRandomIdFromRangeGenerator(0, 25);
+const createRandomIdForPhotoUrl = createRandomIdFromRangeGenerator(0, PUBLISHED_PHOTOS_COUNT);
+
+const createPhoto = () => {
+  const comments = Array
+    .from({ length: generateRandomPositiveInteger(0, MAX_COMMENTS_COUNT) })
+    .map((_, index) => createComment(index));
+
+  return {
+    id: createRandomIdForPhoto(),
+    url: `photos/${ createRandomIdForPhotoUrl() }.jpg`,
+    description: getRandomArrayItem(DESCRIPTIONS),
+    likes: generateRandomPositiveInteger(15, 200),
+    comments,
+  };
+};
+
+const photos = Array
+  .from({ length: PUBLISHED_PHOTOS_COUNT })
+  .map(createPhoto);
+
+console.log(photos);
