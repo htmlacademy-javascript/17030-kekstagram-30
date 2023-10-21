@@ -97,5 +97,3 @@ const createPhoto = () => {
 const photos = Array
   .from({ length: PUBLISHED_PHOTOS_COUNT })
   .map(createPhoto);
-
-console.log(photos);
