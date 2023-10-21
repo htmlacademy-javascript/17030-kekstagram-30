@@ -94,6 +94,6 @@ const createPhoto = () => {
   };
 };
 
-const photos = Array
+Array
   .from({ length: PUBLISHED_PHOTOS_COUNT })
   .map(createPhoto);
