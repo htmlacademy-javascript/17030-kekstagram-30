@@ -40,11 +40,15 @@ const extractNumbers = (target) => {
   return Number.parseInt(numbersSet, 10);
 };
 
-(extractNumbers('2023 год')); // 2023
-(extractNumbers('ECMAScript 2022')); // 2022
-(extractNumbers('1 кефир, 0.5 батона')); // 105
-(extractNumbers('агент 007')); // 7
-(extractNumbers('а я томат')); // NaN
+extractNumbers('2023 год'); // 2023
+extractNumbers('ECMAScript 2022'); // 2022
+extractNumbers('1 кефир, 0.5 батона'); // 105
+extractNumbers('агент 007'); // 7
+extractNumbers('а я томат'); // NaN
+
+extractNumbers(2023); // 2023
+extractNumbers(-1); // 1
+extractNumbers(1.5); // 15
 
 (extractNumbers(2023)); // 2023
 (extractNumbers(-1)); // 1
