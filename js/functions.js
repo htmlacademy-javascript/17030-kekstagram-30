@@ -50,11 +50,11 @@ extractNumbers(2023); // 2023
 extractNumbers(-1); // 1
 extractNumbers(1.5); // 15
 
-const validateBusinessMeeting = (workDayStartTime, workDayEndTime, meetingStartTime, meetingDurationInMinutes) => {
-  const normalizeTimeComponent = (timeComponent) => Number.parseInt(timeComponent.padStart(2, '0'), 10);
-  const splitTimeStringToComponents = (time) => time.split(':').map(normalizeTimeComponent);
-  const createDateFromTimeComponent = (hours, minutes) => new Date(0, 0, 0, hours, minutes);
+const normalizeTimeComponent = (timeComponent) => Number.parseInt(timeComponent.padStart(2, '0'), 10);
+const splitTimeStringToComponents = (time) => time.split(':').map(normalizeTimeComponent);
+const createDateFromTimeComponent = (hours, minutes) => new Date(0, 0, 0, hours, minutes);
 
+const validateBusinessMeeting = (workDayStartTime, workDayEndTime, meetingStartTime, meetingDurationInMinutes) => {
   const workDayStartTimeComponents = splitTimeStringToComponents(workDayStartTime);
   const workDayEndTimeComponents = splitTimeStringToComponents(workDayEndTime);
   const [meetingStartTimeHours, meetingStartTimeMinutes] = splitTimeStringToComponents(meetingStartTime);
