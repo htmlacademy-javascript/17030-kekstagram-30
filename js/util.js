@@ -37,9 +37,12 @@ const getRandomArrayItem = (items) => {
   return items[randomIndex];
 };
 
+const isEscapeKey = ({ key }) => key === 'Escape';
+
 export {
   getId,
   generateRandomPositiveInteger,
   createRandomIdFromRangeGenerator,
   getRandomArrayItem,
+  isEscapeKey,
 };
