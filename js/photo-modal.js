@@ -45,18 +45,18 @@ const renderComments = (comments) => {
   return commentsFragment;
 };
 
-const renderPicture = (photo) => {
+const renderPicture = ({ url, likes, comments, description }) => {
   commentCountElement.classList.add('hidden');
   loadCommentsButton.classList.add('hidden');
 
-  imageElement.src = photo.url;
-  likesElement.textContent = photo.likes;
+  imageElement.src = url;
+  likesElement.textContent = likes;
   shownCommentCountElement.textContent = '?';
-  totalCommentCountElement.textContent = photo.comments.length.toString(10);
+  totalCommentCountElement.textContent = comments.length.toString(10);
 
   commentsContainerElement.innerHTML = '';
-  commentsContainerElement.append(renderComments(photo.comments));
-  socialCaptionElement.textContent = photo.description;
+  commentsContainerElement.append(renderComments(comments));
+  socialCaptionElement.textContent = description;
 };
 
 const onDocumentKeyDown = (evt) => {
