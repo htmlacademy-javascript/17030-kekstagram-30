@@ -1,16 +1,15 @@
 import { createPhotos } from './data.js';
 
 const photos = createPhotos();
-const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const picturesFragment = document.createDocumentFragment();
 
-const createPreview = ({ url, description, likes, comments }) => {
+const createPreview = ({ id, url, description, likes, comments }) => {
   const pictureElement = pictureTemplate.cloneNode(true);
   const pictureImage = pictureElement.querySelector('.picture__img');
   const pictureLikes = pictureElement.querySelector('.picture__likes');
   const pictureComments = pictureElement.querySelector('.picture__comments');
 
+  pictureElement.dataset.pictureId = id;
   pictureImage.src = url;
   pictureImage.alt = description;
 
@@ -20,8 +19,16 @@ const createPreview = ({ url, description, likes, comments }) => {
   return pictureElement;
 };
 
-photos.forEach((photo) => {
-  picturesFragment.append(createPreview(photo));
-});
+const createPhotoPreviews = () => {
+  const picturesFragment = document.createDocumentFragment();
 
-picturesContainer.append(picturesFragment);
+  photos.forEach((photo) => {
+    picturesFragment.append(createPreview(photo));
+  });
+
+  return picturesFragment;
+};
+
+const getPhotoById = (photoId) => photos.find(({ id }) => id === photoId);
+
+export { createPhotoPreviews, getPhotoById };
