@@ -52,7 +52,7 @@ const renderPicture = ({ url, likes, comments, description }) => {
   imageElement.src = url;
   likesElement.textContent = likes;
   shownCommentCountElement.textContent = '?';
-  totalCommentCountElement.textContent = comments.length.toString(10);
+  totalCommentCountElement.textContent = comments.length.toString();
 
   commentsContainerElement.innerHTML = '';
   commentsContainerElement.append(renderComments(comments));
@@ -70,6 +70,7 @@ const onPicturesContainerClick = (evt) => {
   const pictureElement = evt.target.closest('.picture');
 
   if (pictureElement) {
+    evt.preventDefault();
     const pictureId = Number.parseInt(pictureElement.dataset.pictureId, 10);
 
     renderPicture(getPhotoById(pictureId));
