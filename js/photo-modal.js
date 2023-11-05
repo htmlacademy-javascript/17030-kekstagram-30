@@ -70,18 +70,21 @@ const renderBigPicture = ({ url, likes, comments, description }) => {
 
   imageElement.src = url;
   likesElement.textContent = likes;
+  socialCaptionElement.textContent = description;
 
+  commentCountElement.classList.add('hidden');
+  loadCommentsButton.classList.add('hidden');
   totalCommentCountElement.textContent = comments.length.toString();
   commentsContainerElement.append(renderComments());
   updateShownCommentCountText();
 
-  if (isShownAllComments()) {
-    loadCommentsButton.classList.add('hidden');
-  } else {
-    loadCommentsButton.classList.remove('hidden');
+  if (allComments.length) {
+    commentCountElement.classList.remove('hidden');
   }
 
-  socialCaptionElement.textContent = description;
+  if (!isShownAllComments()) {
+    loadCommentsButton.classList.remove('hidden');
+  }
 };
 
 const onDocumentKeyDown = (evt) => {
