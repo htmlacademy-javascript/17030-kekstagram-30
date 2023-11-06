@@ -1,6 +1,6 @@
 import { setUpModal } from './modal.js';
 import { isEscapeKey } from './util.js';
-import './scaling-image.js';
+import { resetScaleValue } from './scaling-image.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 
@@ -88,6 +88,7 @@ function validateUniqHashtags(value) {
 function resetForm() {
   imageUploadForm.reset();
   pristineImageUploadForm.reset();
+  resetScaleValue();
 }
 
 function onKeyDownOnFormInputs(evt) {

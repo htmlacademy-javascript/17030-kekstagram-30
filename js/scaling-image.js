@@ -1,3 +1,4 @@
+const INITIAL_SCALE_VALUE = 100;
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const SCALE_STEP = 25;
@@ -11,6 +12,10 @@ const scaleValueElement = imageUploadForm.querySelector('.scale__control--value'
 function setScaleValue(scaleValue) {
   scaleValueElement.value = `${ scaleValue }%`;
   previewImageElement.style.transform = `scale(${ (scaleValue) / 100 })`;
+}
+
+function resetScaleValue() {
+  setScaleValue(INITIAL_SCALE_VALUE);
 }
 
 scaleDownButtonElement.addEventListener('click', () => {
@@ -28,3 +33,5 @@ scaleUpButtonElement.addEventListener('click', () => {
 
   setScaleValue(scaleValue);
 });
+
+export { resetScaleValue };
