@@ -1,5 +1,6 @@
 import { setUpModal } from './modal.js';
 import { isEscapeKey } from './util.js';
+import './scaling-image.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 
