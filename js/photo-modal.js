@@ -1,5 +1,5 @@
 import { getPhotoById } from './photo-previews.js';
-import { isEscapeKey } from './util.js';
+import { setUpModal } from './modal.js';
 
 const pictureModalElement = document.querySelector('.big-picture');
 
@@ -14,6 +14,12 @@ const loadCommentsButton = pictureModalElement.querySelector('.comments-loader')
 
 const socialCaptionElement = pictureModalElement.querySelector('.social__caption');
 const closePictureModalElement = pictureModalElement.querySelector('.big-picture__cancel');
+
+const bigPictureModal = setUpModal({
+  modalElement: pictureModalElement,
+  closeModalElement: closePictureModalElement,
+  onHideModal: null,
+});
 
 const RECEIVED_COMMENTS_INCREASE_COUNT = 5;
 let receivedCommentsCount = 0;
@@ -87,13 +93,6 @@ const renderBigPicture = ({ url, likes, comments, description }) => {
   }
 };
 
-const onDocumentKeyDown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closePhotoModal();
-  }
-};
-
 const onLoadCommentsClick = (evt) => {
   evt.preventDefault();
 
@@ -113,27 +112,10 @@ const onPicturesContainerClick = (evt) => {
     const pictureId = Number.parseInt(pictureElement.dataset.pictureId, 10);
 
     renderBigPicture(getPhotoById(pictureId));
-    openPhotoModal();
+    bigPictureModal.show();
   }
 };
 
-function openPhotoModal() {
-  pictureModalElement.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-
-  document.addEventListener('keydown', onDocumentKeyDown);
-}
-
-function closePhotoModal() {
-  pictureModalElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-
-  document.removeEventListener('keydown', onDocumentKeyDown);
-}
-
 loadCommentsButton.addEventListener('click', onLoadCommentsClick);
-closePictureModalElement.addEventListener('click', () => {
-  closePhotoModal();
-});
 
 export { onPicturesContainerClick };
