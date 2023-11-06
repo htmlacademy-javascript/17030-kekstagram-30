@@ -1,27 +1,23 @@
 import { getPhotoById } from './photo-previews.js';
 import { setUpModal } from './modal.js';
 
-const pictureModalElement = document.querySelector('.big-picture');
+const RECEIVED_COMMENTS_INCREASE_COUNT = 5;
 
+const pictureModalElement = document.querySelector('.big-picture');
 const imageElement = pictureModalElement.querySelector('.big-picture__img img');
 const likesElement = pictureModalElement.querySelector('.likes-count');
-
 const commentCountElement = pictureModalElement.querySelector('.social__comment-count');
 const shownCommentCountElement = commentCountElement.querySelector('.social__comment-shown-count');
 const totalCommentCountElement = commentCountElement.querySelector('.social__comment-total-count');
 const commentsContainerElement = pictureModalElement.querySelector('.social__comments');
 const loadCommentsButton = pictureModalElement.querySelector('.comments-loader');
-
 const socialCaptionElement = pictureModalElement.querySelector('.social__caption');
 const closePictureModalElement = pictureModalElement.querySelector('.big-picture__cancel');
-
 const bigPictureModal = setUpModal({
   modalElement: pictureModalElement,
   closeModalElement: closePictureModalElement,
-  onHideModal: null,
 });
 
-const RECEIVED_COMMENTS_INCREASE_COUNT = 5;
 let receivedCommentsCount = 0;
 let shownCommentsCount = 0;
 let allComments = [];

@@ -9,6 +9,11 @@ const hashTagsInputElement = imageUploadForm.querySelector('[name="hashtags"]');
 const descriptionInputElement = imageUploadForm.querySelector('[name="description"]');
 const imageUploadOverlayElement = document.querySelector('.img-upload__overlay');
 const closeUploadOverlayElement = imageUploadOverlayElement.querySelector('.img-upload__cancel');
+const imageUploadModal = setUpModal({
+  modalElement: imageUploadOverlayElement,
+  closeModalElement: closeUploadOverlayElement,
+  onHideModalCb: resetForm,
+});
 
 const pristineImageUploadForm = new Pristine(imageUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -19,12 +24,6 @@ const pristineImageUploadForm = new Pristine(imageUploadForm, {
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateHashtags, 'введён невалидный хэш-тег', 1);
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateHashtagsCount, 'превышено количество хэш-тегов', 2);
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateUniqHashtags, 'хэш-теги повторяются', 3);
-
-const imageUploadModal = setUpModal({
-  modalElement: imageUploadOverlayElement,
-  closeModalElement: closeUploadOverlayElement,
-  onHideModal: resetForm,
-});
 
 imageUploadForm.addEventListener('submit', (evt) => {
   const isValidForm = pristineImageUploadForm.validate();
