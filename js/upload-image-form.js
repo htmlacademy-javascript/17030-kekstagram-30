@@ -1,6 +1,7 @@
 import { setUpModal } from './modal.js';
 import { isEscapeKey } from './util.js';
 import { resetScaleValue } from './scaling-image.js';
+import { init as initEffects } from './effects.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 
@@ -13,6 +14,7 @@ const closeUploadOverlayElement = imageUploadOverlayElement.querySelector('.img-
 const imageUploadModal = setUpModal({
   modalElement: imageUploadOverlayElement,
   closeModalElement: closeUploadOverlayElement,
+  onShowModalCb: initEffects,
   onHideModalCb: resetForm,
 });
 
