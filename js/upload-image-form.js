@@ -68,23 +68,7 @@ function validateHashtagsCount(value) {
 function validateUniqHashtags(value) {
   const hashtags = convertToHashtagsArray(value);
 
-  for (let i = 0; i < hashtags.length; i++) {
-    const hashtag = hashtags[i];
-
-    for (let j = 0; j < hashtags.length; j++) {
-      if (j === i) {
-        continue;
-      }
-
-      const comparedHashtag = hashtags[j];
-
-      if (hashtag.toLowerCase() === comparedHashtag.toLowerCase()) {
-        return false;
-      }
-    }
-  }
-
-  return true;
+  return hashtags.length === new Set(hashtags.map((hashtag) => hashtag.toLowerCase())).size;
 }
 
 function resetForm() {
