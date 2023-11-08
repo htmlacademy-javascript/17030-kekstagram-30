@@ -1,5 +1,7 @@
 import { setUpModal } from './modal.js';
 import { isEscapeKey } from './util.js';
+import { resetScaleValue } from './scaling-image.js';
+import { init as initEffects } from './effects.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 
@@ -12,6 +14,7 @@ const closeUploadOverlayElement = imageUploadOverlayElement.querySelector('.img-
 const imageUploadModal = setUpModal({
   modalElement: imageUploadOverlayElement,
   closeModalElement: closeUploadOverlayElement,
+  onShowModalCb: initEffects,
   onHideModalCb: resetForm,
 });
 
@@ -65,28 +68,13 @@ function validateHashtagsCount(value) {
 function validateUniqHashtags(value) {
   const hashtags = convertToHashtagsArray(value);
 
-  for (let i = 0; i < hashtags.length; i++) {
-    const hashtag = hashtags[i];
-
-    for (let j = 0; j < hashtags.length; j++) {
-      if (j === i) {
-        continue;
-      }
-
-      const comparedHashtag = hashtags[j];
-
-      if (hashtag.toLowerCase() === comparedHashtag.toLowerCase()) {
-        return false;
-      }
-    }
-  }
-
-  return true;
+  return hashtags.length === new Set(hashtags.map((hashtag) => hashtag.toLowerCase())).size;
 }
 
 function resetForm() {
   imageUploadForm.reset();
   pristineImageUploadForm.reset();
+  resetScaleValue();
 }
 
 function onKeyDownOnFormInputs(evt) {

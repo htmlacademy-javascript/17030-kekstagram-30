@@ -3,7 +3,7 @@ import { isEscapeKey } from './util.js';
 const TOGGLE_MODAL_CLASS_NAME = 'hidden';
 const SHOWN_MODAL_BODY_CLASS_NAME = 'modal-open';
 
-function setUpModal({ modalElement, closeModalElement, onHideModalCb }) {
+function setUpModal({ modalElement, closeModalElement, onShowModalCb, onHideModalCb }) {
   closeModalElement.addEventListener('click', (evt) => {
     evt.preventDefault();
     hide();
@@ -21,6 +21,10 @@ function setUpModal({ modalElement, closeModalElement, onHideModalCb }) {
     document.body.classList.add(SHOWN_MODAL_BODY_CLASS_NAME);
 
     document.addEventListener('keydown', onDocumentKeyDown);
+
+    if (typeof onShowModalCb === 'function') {
+      onShowModalCb();
+    }
   }
 
   function hide() {
