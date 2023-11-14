@@ -1,7 +1,9 @@
 import { setUpModal } from './modal.js';
 import { isEscapeKey } from './util.js';
 import { resetScaleValue } from './scaling-image.js';
-import { init as initEffects } from './effects.js';
+import { init as initEffects, resetEffect } from './effects.js';
+import { sendData } from './api.js';
+import { showErrorUploadNotification } from './notifications.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 
@@ -11,6 +13,7 @@ const hashTagsInputElement = imageUploadForm.querySelector('[name="hashtags"]');
 const descriptionInputElement = imageUploadForm.querySelector('[name="description"]');
 const imageUploadOverlayElement = document.querySelector('.img-upload__overlay');
 const closeUploadOverlayElement = imageUploadOverlayElement.querySelector('.img-upload__cancel');
+const imageUploadSubmitButtonElement = imageUploadForm.querySelector('.img-upload__submit');
 const imageUploadModal = setUpModal({
   modalElement: imageUploadOverlayElement,
   closeModalElement: closeUploadOverlayElement,
@@ -28,13 +31,29 @@ pristineImageUploadForm.addValidator(hashTagsInputElement, validateHashtags, 'в
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateHashtagsCount, 'превышено количество хэш-тегов', 2);
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateUniqHashtags, 'хэш-теги повторяются', 3);
 
-imageUploadForm.addEventListener('submit', (evt) => {
-  const isValidForm = pristineImageUploadForm.validate();
-
-  if (!isValidForm) {
+function setImageUploadFormSubmit(onSuccess) {
+  imageUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+    const isValidForm = pristineImageUploadForm.validate();
+
+    if (!isValidForm) {
+      return;
+    }
+
+    imageUploadSubmitButtonElement.disabled = true;
+
+    sendData(
+      showErrorUploadNotification,
+      () => {
+        imageUploadModal.hide();
+        onSuccess();
+      },
+      new FormData(evt.target))
+      .finally(() => {
+        imageUploadSubmitButtonElement.disabled = false;
+      });
+  });
+}
 
 imageUploadFileElement.addEventListener('change', () => {
   imageUploadModal.show();
@@ -72,9 +91,10 @@ function validateUniqHashtags(value) {
 }
 
 function resetForm() {
-  imageUploadForm.reset();
+  imageUploadFileElement.value = null;
   pristineImageUploadForm.reset();
   resetScaleValue();
+  resetEffect();
 }
 
 function onKeyDownOnFormInputs(evt) {
@@ -82,3 +102,5 @@ function onKeyDownOnFormInputs(evt) {
     evt.stopPropagation();
   }
 }
+
+export { setImageUploadFormSubmit };

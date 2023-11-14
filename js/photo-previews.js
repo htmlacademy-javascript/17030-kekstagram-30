@@ -1,6 +1,3 @@
-import { createPhotos } from './data.js';
-
-const photos = createPhotos();
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const createPreview = ({ id, url, description, likes, comments }) => {
@@ -19,7 +16,7 @@ const createPreview = ({ id, url, description, likes, comments }) => {
   return pictureElement;
 };
 
-const createPhotoPreviews = () => {
+const createPhotoPreviews = (photos) => {
   const picturesFragment = document.createDocumentFragment();
 
   photos.forEach((photo) => {
@@ -29,6 +26,6 @@ const createPhotoPreviews = () => {
   return picturesFragment;
 };
 
-const getPhotoById = (photoId) => photos.find(({ id }) => id === photoId);
+const getPhotoById = (photos, photoId) => photos.find(({ id }) => id === photoId);
 
 export { createPhotoPreviews, getPhotoById };

@@ -100,18 +100,20 @@ const onLoadCommentsClick = (evt) => {
   }
 };
 
-const onPicturesContainerClick = (evt) => {
-  const pictureElement = evt.target.closest('.picture');
+const setPicturesContainerClick = (picturesContainerElement, photos) => {
+  picturesContainerElement.addEventListener('click', (evt) => {
+    const pictureElement = evt.target.closest('.picture');
 
-  if (pictureElement) {
-    evt.preventDefault();
-    const pictureId = Number.parseInt(pictureElement.dataset.pictureId, 10);
+    if (pictureElement) {
+      evt.preventDefault();
+      const pictureId = Number.parseInt(pictureElement.dataset.pictureId, 10);
 
-    renderBigPicture(getPhotoById(pictureId));
-    bigPictureModal.show();
-  }
+      renderBigPicture(getPhotoById(photos, pictureId));
+      bigPictureModal.show();
+    }
+  });
 };
 
 loadCommentsButton.addEventListener('click', onLoadCommentsClick);
 
-export { onPicturesContainerClick };
+export { setPicturesContainerClick };
