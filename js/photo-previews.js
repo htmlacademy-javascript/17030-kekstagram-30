@@ -1,6 +1,6 @@
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const createPreview = ({ id, url, description, likes, comments }) => {
+function createPreview({ id, url, description, likes, comments }) {
   const pictureElement = pictureTemplate.cloneNode(true);
   const pictureImage = pictureElement.querySelector('.picture__img');
   const pictureLikes = pictureElement.querySelector('.picture__likes');
@@ -14,9 +14,9 @@ const createPreview = ({ id, url, description, likes, comments }) => {
   pictureComments.textContent = comments.length;
 
   return pictureElement;
-};
+}
 
-const createPhotoPreviews = (photos) => {
+function createPreviews(photos) {
   const picturesFragment = document.createDocumentFragment();
 
   photos.forEach((photo) => {
@@ -24,8 +24,17 @@ const createPhotoPreviews = (photos) => {
   });
 
   return picturesFragment;
+}
+
+function renderPreviews(container, photos) {
+  container.append(createPreviews(photos));
+}
+
+function getPhotoById(photos, photoId) {
+  return photos.find(({ id }) => id === photoId);
+}
+
+export {
+  renderPreviews,
+  getPhotoById,
 };
-
-const getPhotoById = (photos, photoId) => photos.find(({ id }) => id === photoId);
-
-export { createPhotoPreviews, getPhotoById };

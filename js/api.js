@@ -1,26 +1,15 @@
-const BASE_URL = 'https://30.javascript.pages.academy';
-const Resource = {
-  SEND_PHOTO: '/kekstagram',
-  GET_PHOTOS: '/kekstagram/data',
+const BASE_URL = 'https://30.javascript.pages.academy/kekstagram';
+const Route = {
+  SEND_PHOTO: '/',
+  GET_PHOTOS: '/data',
+};
+const HttpMethod = {
+  GET: 'GET',
+  POST: 'POST',
 };
 
-function getData(onError, onSuccess) {
-  return fetch(BASE_URL + Resource.GET_PHOTOS)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error();
-      }
-
-      return response.json();
-    })
-    .then((data) => onSuccess(data))
-    .catch((e) => {
-      onError(e);
-    });
-}
-
-function sendData(onError, onSuccess, body = null, method = 'POST') {
-  return fetch(BASE_URL + Resource.SEND_PHOTO, {
+function load({ url, method = HttpMethod.GET, body = null, onSuccess, onError }) {
+  return fetch(url, {
     method,
     body,
   })
@@ -35,7 +24,25 @@ function sendData(onError, onSuccess, body = null, method = 'POST') {
     .catch((e) => onError(e));
 }
 
+function getPhotos(onError, onSuccess) {
+  return load({
+    url: BASE_URL + Route.GET_PHOTOS,
+    onError,
+    onSuccess,
+  });
+}
+
+function sendPhoto(onError, onSuccess, body = null, method = HttpMethod.POST) {
+  return load({
+    url: BASE_URL + Route.SEND_PHOTO,
+    method,
+    body,
+    onError,
+    onSuccess,
+  });
+}
+
 export {
-  getData,
-  sendData,
+  getPhotos,
+  sendPhoto,
 };

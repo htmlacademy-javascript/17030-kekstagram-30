@@ -22,13 +22,15 @@ let receivedCommentsCount = 0;
 let shownCommentsCount = 0;
 let allComments = [];
 
-const updateShownCommentCountText = () => {
+function updateShownCommentCountText() {
   shownCommentCountElement.textContent = shownCommentsCount;
-};
+}
 
-const isShownAllComments = () => shownCommentsCount === allComments.length;
+function isShownAllComments() {
+  return shownCommentsCount === allComments.length;
+}
 
-const createCommentElement = ({ avatar, name, message }) => {
+function createCommentElement({ avatar, name, message }) {
   const commentElement = document.createElement('li');
   commentElement.classList.add('social__comment');
 
@@ -46,9 +48,9 @@ const createCommentElement = ({ avatar, name, message }) => {
   commentElement.append(avatarElement, textElement);
 
   return commentElement;
-};
+}
 
-const renderComments = () => {
+function renderComments() {
   const commentsFragment = document.createDocumentFragment();
   commentsContainerElement.innerHTML = '';
 
@@ -63,9 +65,9 @@ const renderComments = () => {
   receivedCommentsCount = receivedCommentsCount + RECEIVED_COMMENTS_INCREASE_COUNT;
 
   return commentsFragment;
-};
+}
 
-const renderBigPicture = ({ url, likes, comments, description }) => {
+function renderBigPicture({ url, likes, comments, description }) {
   allComments = comments;
   shownCommentsCount = 0;
   receivedCommentsCount = 0;
@@ -87,9 +89,9 @@ const renderBigPicture = ({ url, likes, comments, description }) => {
   if (!isShownAllComments()) {
     loadCommentsButton.classList.remove('hidden');
   }
-};
+}
 
-const onLoadCommentsClick = (evt) => {
+function onLoadCommentsClick(evt) {
   evt.preventDefault();
 
   commentsContainerElement.append(renderComments());
@@ -98,9 +100,9 @@ const onLoadCommentsClick = (evt) => {
   if (isShownAllComments()) {
     loadCommentsButton.classList.add('hidden');
   }
-};
+}
 
-const setPicturesContainerClick = (picturesContainerElement, photos) => {
+function setPicturesContainerClick(picturesContainerElement, photos) {
   picturesContainerElement.addEventListener('click', (evt) => {
     const pictureElement = evt.target.closest('.picture');
 
@@ -112,7 +114,7 @@ const setPicturesContainerClick = (picturesContainerElement, photos) => {
       bigPictureModal.show();
     }
   });
-};
+}
 
 loadCommentsButton.addEventListener('click', onLoadCommentsClick);
 

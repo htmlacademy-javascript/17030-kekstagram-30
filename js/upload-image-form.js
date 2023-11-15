@@ -2,7 +2,7 @@ import { setUpModal } from './modal.js';
 import { isEscapeKey } from './util.js';
 import { resetScaleValue } from './scaling-image.js';
 import { init as initEffects, resetEffect } from './effects.js';
-import { sendData } from './api.js';
+import { sendPhoto } from './api.js';
 import { showErrorUploadNotification } from './notifications.js';
 
 const MAX_HASHTAGS_COUNT = 5;
@@ -40,18 +40,16 @@ function setImageUploadFormSubmit(onSuccess) {
       return;
     }
 
-    imageUploadSubmitButtonElement.disabled = true;
+    disableUploadSubmitButton();
 
-    sendData(
+    sendPhoto(
       showErrorUploadNotification,
       () => {
         imageUploadModal.hide();
         onSuccess();
       },
       new FormData(evt.target))
-      .finally(() => {
-        imageUploadSubmitButtonElement.disabled = false;
-      });
+      .finally(enableUploadSubmitButton);
   });
 }
 
@@ -61,6 +59,14 @@ imageUploadFileElement.addEventListener('change', () => {
 
 hashTagsInputElement.addEventListener('keydown', onKeyDownOnFormInputs);
 descriptionInputElement.addEventListener('keydown', onKeyDownOnFormInputs);
+
+function disableUploadSubmitButton() {
+  imageUploadSubmitButtonElement.disabled = true;
+}
+
+function enableUploadSubmitButton() {
+  imageUploadSubmitButtonElement.disabled = false;
+}
 
 function convertToHashtagsArray(value) {
   return value.trim().split(/\s+/);
