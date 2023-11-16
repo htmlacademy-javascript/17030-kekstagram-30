@@ -1,4 +1,5 @@
 import { isEscapeKey } from './util.js';
+import { isNotificationShown } from './notifications.js';
 
 const TOGGLE_MODAL_CLASS_NAME = 'hidden';
 const SHOWN_MODAL_BODY_CLASS_NAME = 'modal-open';
@@ -10,6 +11,10 @@ function setUpModal({ modalElement, closeModalElement, onShowModalCb, onHideModa
   });
 
   function onDocumentKeyDown(evt) {
+    if (isNotificationShown()) {
+      return;
+    }
+
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       hide();

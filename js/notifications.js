@@ -8,18 +8,6 @@ const errorDataNotificationTemplate = document.querySelector('#data-error').cont
 
 let notificationElement = null;
 
-document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-
-    if (!notificationElement) {
-      return;
-    }
-
-    notificationElement.remove();
-  }
-});
-
 function createSuccessNotification() {
   notificationElement = successNotificationTemplate.cloneNode(true);
   notificationElement.addEventListener('click', (evt) => {
@@ -28,7 +16,7 @@ function createSuccessNotification() {
     }
 
     evt.preventDefault();
-    notificationElement.remove();
+    hideNotificationElement();
   });
 
   return notificationElement;
@@ -42,7 +30,7 @@ function createErrorNotification() {
     }
 
     evt.preventDefault();
-    notificationElement.remove();
+    hideNotificationElement();
   }, { once: true });
 
   return notificationElement;
@@ -56,22 +44,42 @@ function createErrorDataNotification() {
 
 function showSuccessUploadNotification() {
   document.body.append(createSuccessNotification());
+  document.addEventListener('keydown', onDocumentKeydown);
 }
 
 function showErrorUploadNotification() {
   document.body.append(createErrorNotification());
+  document.addEventListener('keydown', onDocumentKeydown);
 }
 
 function showErrorDataNotification() {
   document.body.append(createErrorDataNotification());
 
   setTimeout(() => {
-    notificationElement.remove();
+    hideNotificationElement();
   }, NOTIFICATION_SHOW_TIME_IN_MS);
+}
+
+function onDocumentKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    hideNotificationElement();
+  }
+}
+
+function hideNotificationElement() {
+  notificationElement.remove();
+  notificationElement = null;
+  document.removeEventListener('keydown', onDocumentKeydown);
+}
+
+function isNotificationShown() {
+  return Boolean(notificationElement);
 }
 
 export {
   showSuccessUploadNotification,
   showErrorUploadNotification,
   showErrorDataNotification,
+  isNotificationShown,
 };
