@@ -1,8 +1,16 @@
-import { createPhotoPreviews } from './photo-previews.js';
-import { onPicturesContainerClick } from './photo-modal.js';
-import './upload-image-form.js';
+import { getPhotos } from './api.js';
+import { showErrorDataNotification, showSuccessUploadNotification } from './notifications.js';
+import { renderPreviews } from './photo-previews.js';
+import { setPicturesContainerClick } from './photo-modal.js';
+import { setImageUploadFormSubmit } from './upload-image-form.js';
 
-const picturesContainerElement = document.querySelector('.pictures');
+getPhotos(
+  () => showErrorDataNotification(),
+  (photos) => {
+    const picturesContainerElement = document.querySelector('.pictures');
 
-picturesContainerElement.append(createPhotoPreviews());
-picturesContainerElement.addEventListener('click', onPicturesContainerClick);
+    renderPreviews(picturesContainerElement, photos);
+    setPicturesContainerClick(picturesContainerElement, photos);
+  });
+
+setImageUploadFormSubmit(showSuccessUploadNotification);

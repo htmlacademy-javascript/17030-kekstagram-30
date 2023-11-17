@@ -1,3 +1,5 @@
+const INITIAL_EFFECT_NAME = 'none';
+
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadPreviewElement = imageUploadForm.querySelector('.img-upload__preview img');
 const effectsContainerElement = document.querySelector('.img-upload__effects');
@@ -53,7 +55,7 @@ const filterEffectsSettings = {
     unit: '',
   },
 };
-let currentEffectName = 'none';
+let currentEffectName = INITIAL_EFFECT_NAME;
 
 function init() {
   hideEffectLevelSlider();
@@ -63,7 +65,7 @@ function init() {
 effectsContainerElement.addEventListener('change', (evt) => {
   currentEffectName = evt.target.value;
 
-  if (currentEffectName === 'none') {
+  if (currentEffectName === INITIAL_EFFECT_NAME) {
     hideEffectLevelSlider();
     setFilterValue(null);
     return;
@@ -148,4 +150,13 @@ function getFilterEffectSettings() {
   return filterEffectsSettings[currentEffectName];
 }
 
-export { init };
+function resetEffect() {
+  currentEffectName = INITIAL_EFFECT_NAME;
+  effectsContainerElement.querySelector(`[name="effect"][value="${ INITIAL_EFFECT_NAME }"]`).checked = true;
+  setFilterValue(null);
+}
+
+export {
+  init,
+  resetEffect,
+};
