@@ -9,4 +9,17 @@ function debounce(cb, timeoutDelay) {
   };
 }
 
+function throttle(cb, delayBetweenFrames) {
+  let lastTime = 0;
+
+  return (...params) => {
+    const now = Date.now();
+
+    if (now - lastTime >= delayBetweenFrames) {
+      cb.apply(this, params);
+      lastTime = now;
+    }
+  };
+}
+
 export { isEscapeKey };
