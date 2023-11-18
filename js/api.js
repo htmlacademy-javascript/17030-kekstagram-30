@@ -8,7 +8,7 @@ const HttpMethod = {
   POST: 'POST',
 };
 
-function load({ url, method = HttpMethod.GET, body = null, onSuccess, onError }) {
+function load({ url, method = HttpMethod.GET, body = null, onError, onSuccess }) {
   return fetch(url, {
     method,
     body,

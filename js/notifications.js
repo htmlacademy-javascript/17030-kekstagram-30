@@ -6,7 +6,7 @@ const successNotificationTemplate = document.querySelector('#success').content.q
 const errorNotificationTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorDataNotificationTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 
-let notificationElement = null;
+let notificationElement;
 
 function createSuccessNotification() {
   notificationElement = successNotificationTemplate.cloneNode(true);
