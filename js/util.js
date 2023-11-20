@@ -1,4 +1,19 @@
-const isEscapeKey = ({ key }) => key === 'Escape';
+function isEscapeKey({ key }) {
+  return key === 'Escape';
+}
+
+function getRandomArrayItem(items) {
+  const randomIndex = generateRandomPositiveInteger(0, items.length - 1);
+
+  return items[randomIndex];
+}
+function generateRandomPositiveInteger(min, max) {
+  const lower = Math.floor(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.ceil(Math.max(Math.abs(min), Math.abs(max)));
+  const randomValue = Math.random() * (upper - lower + 1) + lower;
+
+  return Math.floor(randomValue);
+}
 
 function debounce(cb, timeoutDelay) {
   let timeoutId;
@@ -22,4 +37,4 @@ function throttle(cb, delayBetweenFrames) {
   };
 }
 
-export { isEscapeKey };
+export { isEscapeKey, getRandomArrayItem };
