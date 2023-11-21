@@ -4,6 +4,7 @@ import { renderPreviews } from './photo-previews.js';
 import { setPicturesContainerClick } from './photo-modal.js';
 import { setImageUploadFormSubmit } from './upload-image-form.js';
 import { setFiltersClick, showFilters } from './filters.js';
+import { debounce } from './util.js';
 
 getPhotos(
   () => showErrorDataNotification(),
@@ -11,7 +12,7 @@ getPhotos(
     const picturesContainerElement = document.querySelector('.pictures');
 
     showFilters();
-    setFiltersClick(photos, renderPreviews);
+    setFiltersClick(photos, debounce(renderPreviews));
     setPicturesContainerClick(picturesContainerElement, photos);
   });
 
