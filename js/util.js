@@ -15,12 +15,12 @@ function generateRandomPositiveInteger(min, max) {
   return Math.floor(randomValue);
 }
 
-function debounce(cb, timeoutDelay) {
+function debounce(cb, timeoutDelay = 500) {
   let timeoutId;
 
   return (...params) => {
     clearTimeout(timeoutId);
-    setTimeout(() => cb.apply(this, params), timeoutDelay);
+    timeoutId = setTimeout(() => cb.apply(this, params), timeoutDelay);
   };
 }
 
@@ -37,4 +37,8 @@ function throttle(cb, delayBetweenFrames) {
   };
 }
 
-export { isEscapeKey, getRandomArrayItem };
+export {
+  isEscapeKey,
+  getRandomArrayItem,
+  debounce,
+};
