@@ -3,6 +3,7 @@ const INITIAL_EFFECT_NAME = 'none';
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadPreviewElement = imageUploadForm.querySelector('.img-upload__preview img');
 const effectsContainerElement = document.querySelector('.img-upload__effects');
+const effectPreviewsElements = effectsContainerElement.querySelectorAll('.effects__preview');
 const effectLevelElement = imageUploadForm.querySelector('.img-upload__effect-level');
 const effectLevelInputElement = effectLevelElement.querySelector('.effect-level__value');
 const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
@@ -156,7 +157,14 @@ function resetEffect() {
   setFilterValue(null);
 }
 
+function setEffectPreviewsBackgroundImageStyle(url) {
+  effectPreviewsElements.forEach((effectPreviewElement) => {
+    effectPreviewElement.style = url ? `background-image: url(${ url })` : '';
+  });
+}
+
 export {
   init,
   resetEffect,
+  setEffectPreviewsBackgroundImageStyle,
 };

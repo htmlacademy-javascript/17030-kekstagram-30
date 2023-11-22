@@ -1,13 +1,16 @@
 import { setUpModal } from './modal.js';
 import { isEscapeKey } from './util.js';
 import { resetScaleValue } from './scaling-image.js';
-import { init as initEffects, resetEffect } from './effects.js';
+import { init as initEffects, resetEffect, setEffectPreviewsBackgroundImageStyle } from './effects.js';
 import { sendPhoto } from './api.js';
 import { showErrorUploadNotification } from './notifications.js';
 
 const MAX_HASHTAGS_COUNT = 5;
+const ALLOWED_FILE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
 
 const imageUploadForm = document.querySelector('.img-upload__form');
+const imageUploadPreviewElement = imageUploadForm.querySelector('.img-upload__preview img');
+const initialUploadImageUrl = imageUploadPreviewElement.src;
 const imageUploadFileElement = imageUploadForm.querySelector('.img-upload__input');
 const hashTagsInputElement = imageUploadForm.querySelector('[name="hashtags"]');
 const descriptionInputElement = imageUploadForm.querySelector('[name="description"]');
@@ -53,7 +56,15 @@ function setImageUploadFormSubmit(onSuccess) {
   });
 }
 
-imageUploadFileElement.addEventListener('change', () => {
+imageUploadFileElement.addEventListener('change', (evt) => {
+  const file = evt.target.files[0];
+  const fileName = file.name.toLowerCase();
+
+  if (!checkFileExtension(fileName)) {
+    return;
+  }
+
+  setSelectedImageUrl(file);
   imageUploadModal.show();
 });
 
@@ -101,6 +112,27 @@ function resetForm() {
   pristineImageUploadForm.reset();
   resetScaleValue();
   resetEffect();
+  resetSelectedImageUrl();
+}
+
+function setSelectedImageUrl(imageFile) {
+  const imageUrl = URL.createObjectURL(imageFile);
+  imageUploadPreviewElement.src = imageUrl;
+  setEffectPreviewsBackgroundImageStyle(imageUrl);
+}
+
+function resetSelectedImageUrl() {
+  URL.revokeObjectURL(imageUploadPreviewElement.src);
+  imageUploadPreviewElement.src = initialUploadImageUrl;
+  setEffectPreviewsBackgroundImageStyle();
+}
+
+function checkFileExtension(fileName) {
+  return ALLOWED_FILE_EXTENSIONS.some((it) => fileName.endsWith(it));
+}
+
+function setAcceptAttributeToUploadFileElement() {
+  imageUploadFileElement.accept = ALLOWED_FILE_EXTENSIONS.join(',');
 }
 
 function onKeyDownOnFormInputs(evt) {
@@ -109,4 +141,7 @@ function onKeyDownOnFormInputs(evt) {
   }
 }
 
-export { setImageUploadFormSubmit };
+export {
+  setImageUploadFormSubmit,
+  setAcceptAttributeToUploadFileElement,
+};
