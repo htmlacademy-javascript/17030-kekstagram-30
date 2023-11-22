@@ -1,3 +1,4 @@
+const picturesContainerElement = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 function createPreview({ id, url, description, likes, comments }) {
@@ -26,8 +27,19 @@ function createPreviews(photos) {
   return picturesFragment;
 }
 
-function renderPreviews(container, photos) {
-  container.append(createPreviews(photos));
+function renderPreviews(photos) {
+  removePreviews();
+  picturesContainerElement.append(createPreviews(photos));
+}
+
+function removePreviews() {
+  let pictureElements = picturesContainerElement.querySelectorAll('.picture');
+
+  for (const pictureElement of pictureElements) {
+    pictureElement.remove();
+  }
+
+  pictureElements = null;
 }
 
 function getPhotoById(photos, photoId) {
