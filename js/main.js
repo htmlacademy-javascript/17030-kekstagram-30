@@ -12,6 +12,7 @@ getPhotos(
     const picturesContainerElement = document.querySelector('.pictures');
 
     showFilters();
+    renderPreviews(photos);
     setFiltersClick(photos, debounce(renderPreviews));
     setPicturesContainerClick(picturesContainerElement, photos);
   });
