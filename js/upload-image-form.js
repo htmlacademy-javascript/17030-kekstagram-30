@@ -115,6 +115,8 @@ function validateDescriptionMaxLength(value) {
 
 function resetForm() {
   imageUploadFileElement.value = null;
+  hashTagsInputElement.value = '';
+  descriptionInputElement.value = '';
   pristineImageUploadForm.reset();
   resetScaleValue();
   resetEffect();
