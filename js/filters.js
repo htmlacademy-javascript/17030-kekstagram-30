@@ -49,29 +49,30 @@ function filterByCommentsCount(data) {
 }
 
 function setFiltersClick(data, cb) {
-  updateActiveFilterButtons(filtersButtons[0]);
-  cb(filterFunctions[FilterType.DEFAULT](data));
-
   filtersElement.addEventListener('click', (evt) => {
-    const filterButtonElement = evt.target.closest(BUTTON_CLASS_SELECTOR);
-
-    if (!filterButtonElement) {
-      return;
-    }
-
-    evt.preventDefault();
-
-    const filterType = filterButtonElement.id;
-
-    if (currentFilterType === filterType) {
-      return;
-    }
-
-    currentFilterType = filterType;
-
-    updateActiveFilterButtons(filterButtonElement);
-    cb(filterFunctions[currentFilterType](data));
+    rerender(evt, data, cb);
   });
+}
+
+function rerender(evt, data, cb) {
+  const filterButtonElement = evt.target.closest(BUTTON_CLASS_SELECTOR);
+
+  if (!filterButtonElement) {
+    return;
+  }
+
+  evt.preventDefault();
+
+  const filterType = filterButtonElement.id;
+
+  if (currentFilterType === filterType) {
+    return;
+  }
+
+  currentFilterType = filterType;
+
+  updateActiveFilterButtons(filterButtonElement);
+  cb(filterFunctions[currentFilterType](data));
 }
 
 function updateActiveFilterButtons(activeButton) {

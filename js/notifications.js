@@ -31,7 +31,7 @@ function createErrorNotification() {
 
     evt.preventDefault();
     hideNotificationElement();
-  }, { once: true });
+  });
 
   return notificationElement;
 }

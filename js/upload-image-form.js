@@ -6,6 +6,7 @@ import { sendPhoto } from './api.js';
 import { showErrorUploadNotification } from './notifications.js';
 
 const MAX_HASHTAGS_COUNT = 5;
+const MAX_DESCRIPTION_COUNT = 140;
 const ALLOWED_FILE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
 
 const imageUploadForm = document.querySelector('.img-upload__form');
@@ -33,6 +34,7 @@ const pristineImageUploadForm = new Pristine(imageUploadForm, {
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateHashtags, 'введён невалидный хэш-тег', 1);
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateHashtagsCount, 'превышено количество хэш-тегов', 2);
 pristineImageUploadForm.addValidator(hashTagsInputElement, validateUniqHashtags, 'хэш-теги повторяются', 3);
+pristineImageUploadForm.addValidator(descriptionInputElement, validateDescriptionMaxLength, 'длина комментария не может составлять больше 140 символов', 4);
 
 function setImageUploadFormSubmit(onSuccess) {
   imageUploadForm.addEventListener('submit', (evt) => {
@@ -107,8 +109,14 @@ function validateUniqHashtags(value) {
   return hashtags.length === new Set(hashtags.map((hashtag) => hashtag.toLowerCase())).size;
 }
 
+function validateDescriptionMaxLength(value) {
+  return value.length <= MAX_DESCRIPTION_COUNT;
+}
+
 function resetForm() {
   imageUploadFileElement.value = null;
+  hashTagsInputElement.value = '';
+  descriptionInputElement.value = '';
   pristineImageUploadForm.reset();
   resetScaleValue();
   resetEffect();
