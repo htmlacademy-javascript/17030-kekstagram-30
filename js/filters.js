@@ -10,18 +10,17 @@ const FilterType = {
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed',
 };
-const filterFunctions = {
-  [FilterType.DEFAULT]: filterByDefault,
-  [FilterType.RANDOM]: filterByRandom,
-  [FilterType.DISCUSSED]: filterByCommentsCount,
+
+const comparePhotosByCommentCount = (photoA, photoB) => {
+  const commentsCountA = photoA.comments.length;
+  const commentsCountB = photoB.comments.length;
+
+  return commentsCountB - commentsCountA;
 };
-let currentFilterType = FilterType.DEFAULT;
 
-function filterByDefault(data) {
-  return data.slice();
-}
+const filterByDefault = (data) => data.slice();
 
-function filterByRandom(data) {
+const filterByRandom = (data) => {
   const items = [];
 
   for (let i = 0; i < MAX_RANDOM_ITEMS_COUNT; i++) {
@@ -35,26 +34,24 @@ function filterByRandom(data) {
   }
 
   return items;
-}
+};
 
-function comparePhotosByCommentCount(photoA, photoB) {
-  const commentsCountA = photoA.comments.length;
-  const commentsCountB = photoB.comments.length;
+const filterByCommentsCount = (data) => data.slice().sort(comparePhotosByCommentCount);
 
-  return commentsCountB - commentsCountA;
-}
+const filterFunctions = {
+  [FilterType.DEFAULT]: filterByDefault,
+  [FilterType.RANDOM]: filterByRandom,
+  [FilterType.DISCUSSED]: filterByCommentsCount,
+};
 
-function filterByCommentsCount(data) {
-  return data.slice().sort(comparePhotosByCommentCount);
-}
+let currentFilterType = FilterType.DEFAULT;
 
-function setFiltersClick(data, cb) {
-  filtersElement.addEventListener('click', (evt) => {
-    rerender(evt, data, cb);
-  });
-}
+const updateActiveFilterButtons = (activeButton) => {
+  filtersButtons.forEach((button) => button.classList.remove(BUTTON_ACTIVE_CLASS_NAME));
+  activeButton.classList.add(BUTTON_ACTIVE_CLASS_NAME);
+};
 
-function rerender(evt, data, cb) {
+const rerender = (evt, data, cb) => {
   const filterButtonElement = evt.target.closest(BUTTON_CLASS_SELECTOR);
 
   if (!filterButtonElement) {
@@ -73,16 +70,17 @@ function rerender(evt, data, cb) {
 
   updateActiveFilterButtons(filterButtonElement);
   cb(filterFunctions[currentFilterType](data));
-}
+};
 
-function updateActiveFilterButtons(activeButton) {
-  filtersButtons.forEach((button) => button.classList.remove(BUTTON_ACTIVE_CLASS_NAME));
-  activeButton.classList.add(BUTTON_ACTIVE_CLASS_NAME);
-}
-
-function showFilters() {
+const showFilters = () => {
   filtersElement.classList.remove('img-filters--inactive');
-}
+};
+
+const setFiltersClick = (data, cb) => {
+  filtersElement.addEventListener('click', (evt) => {
+    rerender(evt, data, cb);
+  });
+};
 
 export {
   showFilters,
