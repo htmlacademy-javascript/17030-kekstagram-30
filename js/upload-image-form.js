@@ -70,8 +70,8 @@ imageUploadFileElement.addEventListener('change', (evt) => {
   imageUploadModal.show();
 });
 
-hashTagsInputElement.addEventListener('keydown', onKeyDownOnFormInputs);
-descriptionInputElement.addEventListener('keydown', onKeyDownOnFormInputs);
+hashTagsInputElement.addEventListener('keydown', onFormInputKeyDown);
+descriptionInputElement.addEventListener('keydown', onFormInputKeyDown);
 
 function disableUploadSubmitButton() {
   imageUploadSubmitButtonElement.disabled = true;
@@ -143,7 +143,7 @@ function setAcceptAttributeToUploadFileElement() {
   imageUploadFileElement.accept = ALLOWED_FILE_EXTENSIONS.join(',');
 }
 
-function onKeyDownOnFormInputs(evt) {
+function onFormInputKeyDown(evt) {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
