@@ -9,14 +9,14 @@ const scaleDownButtonElement = imageUploadForm.querySelector('.scale__control--s
 const scaleUpButtonElement = imageUploadForm.querySelector('.scale__control--bigger');
 const scaleValueElement = imageUploadForm.querySelector('.scale__control--value');
 
-function setScaleValue(scaleValue) {
+const setScaleValue = (scaleValue) => {
   scaleValueElement.value = `${ scaleValue }%`;
   previewImageElement.style.transform = `scale(${ (scaleValue) / 100 })`;
-}
+};
 
-function resetScaleValue() {
+const resetScaleValue = () => {
   setScaleValue(INITIAL_SCALE_VALUE);
-}
+};
 
 scaleDownButtonElement.addEventListener('click', () => {
   const currentScaleValue = Number.parseInt(scaleValueElement.value, 10);

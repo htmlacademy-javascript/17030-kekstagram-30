@@ -58,10 +58,84 @@ const filterEffectsSettings = {
 };
 let currentEffectName = INITIAL_EFFECT_NAME;
 
-function init() {
+const getFilterEffectSettings = () => filterEffectsSettings[currentEffectName];
+
+const generateFilter = (value) => {
+  const { filter, unit } = getFilterEffectSettings();
+  return `${ filter }(${ value }${ unit })`;
+};
+
+const setFilterEffectForImagePreview = (value) => {
+  imageUploadPreviewElement.style.filter = value
+    ? generateFilter(value)
+    : null;
+};
+
+const setFilterValue = (value) => {
+  effectLevelInputElement.value = value;
+  setFilterEffectForImagePreview(value);
+};
+
+const onUpdateEffectLevelSlider = (value) => {
+  setFilterValue(value);
+};
+
+const generateEffectOptions = ({ range, step }) => ({
+  start: range[1],
+  connect: 'lower',
+  range: {
+    min: range[0],
+    max: range[1],
+  },
+  step: step,
+  format: {
+    to(value) {
+      return value;
+    },
+    from(value) {
+      const valueAsNumber = Number.parseFloat(value);
+
+      if (Number.isInteger(valueAsNumber)) {
+        return valueAsNumber.toFixed(0);
+      }
+      return valueAsNumber.toFixed(1);
+    },
+  },
+});
+
+const getSliderEffectSettings = () => sliderEffectsSettings[currentEffectName];
+
+const initEffectLevelSlider = () => {
+  noUiSlider.create(effectLevelSliderElement, generateEffectOptions(getSliderEffectSettings()));
+  effectLevelSliderElement.noUiSlider.on('update', onUpdateEffectLevelSlider);
+};
+
+const showEffectLevelSlider = () => {
+  effectLevelElement.classList.remove('hidden');
+  effectLevelInputElement.removeAttribute('disabled');
+};
+
+const hideEffectLevelSlider = () => {
+  effectLevelElement.classList.add('hidden');
+  effectLevelInputElement.setAttribute('disabled', 'true');
+};
+
+const resetEffect = () => {
+  currentEffectName = INITIAL_EFFECT_NAME;
+  effectsContainerElement.querySelector(`[name="effect"][value="${ INITIAL_EFFECT_NAME }"]`).checked = true;
+  setFilterValue(null);
+};
+
+const setEffectPreviewsBackgroundImageStyle = (url) => {
+  effectPreviewsElements.forEach((effectPreviewElement) => {
+    effectPreviewElement.style = url ? `background-image: url(${ url })` : '';
+  });
+};
+
+const init = () => {
   hideEffectLevelSlider();
   setFilterValue(null);
-}
+};
 
 effectsContainerElement.addEventListener('change', (evt) => {
   currentEffectName = evt.target.value;
@@ -82,86 +156,6 @@ effectsContainerElement.addEventListener('change', (evt) => {
 
   effectLevelSliderElement.noUiSlider.updateOptions(generateEffectOptions(getSliderEffectSettings()));
 });
-
-function onUpdateEffectLevelSlider(value) {
-  setFilterValue(value);
-}
-
-function initEffectLevelSlider() {
-  noUiSlider.create(effectLevelSliderElement, generateEffectOptions(getSliderEffectSettings()));
-  effectLevelSliderElement.noUiSlider.on('update', onUpdateEffectLevelSlider);
-}
-
-function showEffectLevelSlider() {
-  effectLevelElement.classList.remove('hidden');
-  effectLevelInputElement.removeAttribute('disabled');
-}
-
-function hideEffectLevelSlider() {
-  effectLevelElement.classList.add('hidden');
-  effectLevelInputElement.setAttribute('disabled', 'true');
-}
-
-function generateEffectOptions({ range, step }) {
-  return {
-    start: range[1],
-    connect: 'lower',
-    range: {
-      min: range[0],
-      max: range[1],
-    },
-    step: step,
-    format: {
-      to(value) {
-        return value;
-      },
-      from(value) {
-        const valueAsNumber = Number.parseFloat(value);
-
-        if (Number.isInteger(valueAsNumber)) {
-          return valueAsNumber.toFixed(0);
-        }
-        return valueAsNumber.toFixed(1);
-      },
-    },
-  };
-}
-
-function setFilterValue(value) {
-  effectLevelInputElement.value = value;
-  setFilterEffectForImagePreview(value);
-}
-
-function setFilterEffectForImagePreview(value) {
-  imageUploadPreviewElement.style.filter = value
-    ? generateFilter(value)
-    : null;
-}
-
-function generateFilter(value) {
-  const { filter, unit } = getFilterEffectSettings();
-  return `${ filter }(${ value }${ unit })`;
-}
-
-function getSliderEffectSettings() {
-  return sliderEffectsSettings[currentEffectName];
-}
-
-function getFilterEffectSettings() {
-  return filterEffectsSettings[currentEffectName];
-}
-
-function resetEffect() {
-  currentEffectName = INITIAL_EFFECT_NAME;
-  effectsContainerElement.querySelector(`[name="effect"][value="${ INITIAL_EFFECT_NAME }"]`).checked = true;
-  setFilterValue(null);
-}
-
-function setEffectPreviewsBackgroundImageStyle(url) {
-  effectPreviewsElements.forEach((effectPreviewElement) => {
-    effectPreviewElement.style = url ? `background-image: url(${ url })` : '';
-  });
-}
 
 export {
   init,

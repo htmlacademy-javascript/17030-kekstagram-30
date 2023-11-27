@@ -8,7 +8,14 @@ const errorDataNotificationTemplate = document.querySelector('#data-error').cont
 
 let notificationElement;
 
-function createSuccessNotification() {
+const onDocumentKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    hideNotificationElement();
+  }
+};
+
+const createSuccessNotification = () => {
   notificationElement = successNotificationTemplate.cloneNode(true);
   notificationElement.addEventListener('click', (evt) => {
     if (!evt.target.matches('.success, .success__button')) {
@@ -20,9 +27,9 @@ function createSuccessNotification() {
   });
 
   return notificationElement;
-}
+};
 
-function createErrorNotification() {
+const createErrorNotification = () => {
   notificationElement = errorNotificationTemplate.cloneNode(true);
   notificationElement.addEventListener('click', (evt) => {
     if (!evt.target.matches('.error, .error__button')) {
@@ -34,38 +41,31 @@ function createErrorNotification() {
   });
 
   return notificationElement;
-}
+};
 
-function createErrorDataNotification() {
+const createErrorDataNotification = () => {
   notificationElement = errorDataNotificationTemplate.cloneNode(true);
 
   return notificationElement;
-}
+};
 
-function showSuccessUploadNotification() {
+const showSuccessUploadNotification = () => {
   document.body.append(createSuccessNotification());
   document.addEventListener('keydown', onDocumentKeydown);
-}
+};
 
-function showErrorUploadNotification() {
+const showErrorUploadNotification = () => {
   document.body.append(createErrorNotification());
   document.addEventListener('keydown', onDocumentKeydown);
-}
+};
 
-function showErrorDataNotification() {
+const showErrorDataNotification = () => {
   document.body.append(createErrorDataNotification());
 
   setTimeout(() => {
     hideNotificationElement();
   }, NOTIFICATION_SHOW_TIME_IN_MS);
-}
-
-function onDocumentKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    hideNotificationElement();
-  }
-}
+};
 
 function hideNotificationElement() {
   notificationElement.remove();
@@ -73,9 +73,7 @@ function hideNotificationElement() {
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-function isNotificationShown() {
-  return Boolean(notificationElement);
-}
+const isNotificationShown = () => Boolean(notificationElement);
 
 export {
   showSuccessUploadNotification,

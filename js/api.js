@@ -8,39 +8,33 @@ const HttpMethod = {
   POST: 'POST',
 };
 
-function load({ url, method = HttpMethod.GET, body = null, onError, onSuccess }) {
-  return fetch(url, {
-    method,
-    body,
+const load = ({ url, method = HttpMethod.GET, body = null, onError, onSuccess }) => fetch(url, {
+  method,
+  body,
+})
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    return response.json();
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error();
-      }
+  .then((data) => onSuccess(data))
+  .catch((e) => onError(e));
 
-      return response.json();
-    })
-    .then((data) => onSuccess(data))
-    .catch((e) => onError(e));
-}
+const getPhotos = (onError, onSuccess) => load({
+  url: BASE_URL + Route.GET_PHOTOS,
+  onError,
+  onSuccess,
+});
 
-function getPhotos(onError, onSuccess) {
-  return load({
-    url: BASE_URL + Route.GET_PHOTOS,
-    onError,
-    onSuccess,
-  });
-}
-
-function sendPhoto(onError, onSuccess, body = null, method = HttpMethod.POST) {
-  return load({
-    url: BASE_URL + Route.SEND_PHOTO,
-    method,
-    body,
-    onError,
-    onSuccess,
-  });
-}
+const sendPhoto = (onError, onSuccess, body = null, method = HttpMethod.POST) => load({
+  url: BASE_URL + Route.SEND_PHOTO,
+  method,
+  body,
+  onError,
+  onSuccess,
+});
 
 export {
   getPhotos,
