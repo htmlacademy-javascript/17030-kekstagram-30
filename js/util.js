@@ -14,7 +14,7 @@ const getRandomArrayItem = (items) => {
   return items[randomIndex];
 };
 
-const debounce = function (cb, timeoutDelay = 500) {
+const debounce = (cb, timeoutDelay = 500) => {
   let timeoutId;
 
   return (...params) => {
